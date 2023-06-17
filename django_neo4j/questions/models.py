@@ -1,14 +1,16 @@
-from neomodel import RelationshipTo, StringProperty, StructuredNode, UniqueIdProperty
+from neomodel import RelationshipTo, StringProperty, UniqueIdProperty
+
+from django_neo4j.utils.django_neo4j import DjangoNode
 
 # Create your models here.
 
 
-class Question(StructuredNode):
+class Question(DjangoNode):
     uid = UniqueIdProperty()
     prompt = StringProperty(required=True)
 
 
-class Choice(StructuredNode):
+class Choice(DjangoNode):
     uid = UniqueIdProperty()
     text = StringProperty(unique=True)
 
