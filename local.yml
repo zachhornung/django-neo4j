@@ -3,6 +3,7 @@ version: '3'
 volumes:
   django_neo4j_local_postgres_data: {}
   django_neo4j_local_postgres_data_backups: {}
+  django_neo4j_local_neo4j_data: {}
 
 services:
   django: &django
@@ -13,6 +14,7 @@ services:
     container_name: django_neo4j_local_django
     depends_on:
       - postgres
+      - neo4j
       - redis
       - mailhog
     volumes:
@@ -35,6 +37,20 @@ services:
       - django_neo4j_local_postgres_data_backups:/backups
     env_file:
       - ./.envs/.local/.postgres
+
+  neo4j:
+    image: neo4j:5.9.0
+    container_name: django_neo4j_local_neo4j
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - django_neo4j_local_neo4j_data:/data
+    environment:
+      # Raise memory limits
+      - NEO4J_server_memory_pagecache_size=1G
+      - NEO4J_dbms.memory.heap.initial_size=1G
+      - NEO4J_server_memory_heap_max__size=1G
 
   docs:
     image: django_neo4j_local_docs

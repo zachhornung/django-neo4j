@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
+from neomodel import config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # django_neo4j/
@@ -48,6 +49,9 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# NEO4J
+NEOMODEL_NEO4J_BOLT_URL = env.str("NEO4j_BOLT_URL", "neo4j://neo4j:Uncommon@neo4j:7687")
+config.DATABASE_URL = "neo4j://neo4j:Uncommon@neo4j:7687"
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -86,6 +90,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "django_neo4j.users",
     # Your stuff: custom apps go here
+    "django_neo4j.questions",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
